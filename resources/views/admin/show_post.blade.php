@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html>
-  <head> 
+  <head>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    
     @include('admin.css')
 
     <style type="text/css">
@@ -42,6 +45,15 @@
         <div class="page-content">
             <h1 class="title_deg">All Post</h1>
 
+            @if(session()->has('message'))
+            <div class="alert alert-danger">
+
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
+                {{ session()->get('message') }}
+            </div>
+        @endif
+
+
             <table class="table_deg">
                 <tr class="th_deg">
                     <th>Post title</th>
@@ -50,6 +62,7 @@
                     <th>Post Status</th>
                     <th>UserType</th>
                     <th>Image</th>
+                    <th>Action</th>
                 </tr>
 
                 @foreach($post as $post)
@@ -63,6 +76,10 @@
                     <td>
                         <img class="img_deg" src="postimages/{{$post->image}}" />
                     </td>
+                    <td>
+                        <a href="{{url('delete_post', $post->id)}}" class="btn btn-danger" onclick="confirmation(event)">Delete</a>
+                    </td>
+
                 </tr>
 
                 @endforeach
@@ -74,5 +91,33 @@
 
         
         @include('admin.footer')
+
+        <script type="text/javascript">
+          function confirmation(e){
+            e.preventDefault();
+            var url = e.currentTarget.getAttribute('href');
+
+            console.log('url', url);
+
+            swal({
+              title: "Are you sure to delete this",
+
+              text: "you will not be able to recover this data",
+
+              icon: "warning",
+
+              buttons: true,
+
+              dangerMode: true,
+            })
+            .then((willcancle)=>{
+              if(willcancle){
+                window.location.href = url;
+              }
+            })
+          }
+
+        </script>
+
   </body>
 </html>

@@ -24,3 +24,4 @@ Route::get('/home', [AdminController::class, 'index'])->name('home');
 Route::get('/post_page', [AdminController::class, 'postPage']);
 Route::post('/add_post', [AdminController::class, 'addPost']);
 Route::get('/show_post', [AdminController::class, 'showPost']);
+Route::get('/delete_post/{id}', [AdminController::class, 'deletePost']);
