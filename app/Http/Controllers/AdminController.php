@@ -73,4 +73,27 @@ class AdminController extends Controller
 
         return redirect()->back()->with('message', 'Post Deleted Successfully');
     }
+
+    public function editPage($id) {
+        $post = Post::find($id);
+
+        return view('admin.edit_page', compact('post'));
+    }
+
+    public function updatePage(Request $request, $id) {
+        $post = Post::find($id);
+        $post->title = $request->title;
+        $post->description = $request->description;
+        //upload image
+        $image = $request->image;
+        if($image) {
+            $imageName = time().'.'.$image->getClientOriginalExtension();
+            $request->image->move(public_path('postimages'), $imageName);
+            $post->image = $imageName; 
+        }
+        $post->save();
+
+        return redirect()->back()->with('message', 'Post Updated Successfully');
+    }
+
 }

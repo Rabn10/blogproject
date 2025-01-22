@@ -77,6 +77,7 @@
                         <img class="img_deg" src="postimages/{{$post->image}}" />
                     </td>
                     <td>
+                      <a href="{{url('edit_page', $post->id)}}" class="btn btn-success">Edit</a>
                         <a href="{{url('delete_post', $post->id)}}" class="btn btn-danger" onclick="confirmation(event)">Delete</a>
                     </td>
 
