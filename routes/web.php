@@ -25,3 +25,5 @@ Route::get('/post_page', [AdminController::class, 'postPage']);
 Route::post('/add_post', [AdminController::class, 'addPost']);
 Route::get('/show_post', [AdminController::class, 'showPost']);
 Route::get('/delete_post/{id}', [AdminController::class, 'deletePost']);
+Route::get('/edit_page/{id}', [AdminController::class, 'editPage']);
+Route::post('/update_post/{id}', [AdminController::class, 'updatePage']);
