@@ -17,6 +17,7 @@ use App\Http\Controllers\HomeController;
 */
 
 Route::get('/', [HomeController::class, 'HomePage']);
+Route::get('/post_details/{id}', [HomeController::class, 'postDetails']);
 
 
 Route::get('/home', [AdminController::class, 'index'])->name('home');
