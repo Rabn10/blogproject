@@ -63,6 +63,7 @@
                     <th>UserType</th>
                     <th>Image</th>
                     <th>Action</th>
+                    <th>Post Activity</th>
                 </tr>
 
                 @foreach($post as $post)
@@ -79,6 +80,10 @@
                     <td>
                       <a href="{{url('edit_page', $post->id)}}" class="btn btn-success">Edit</a>
                         <a href="{{url('delete_post', $post->id)}}" class="btn btn-danger" onclick="confirmation(event)">Delete</a>
+                    </td>
+                    <td>
+                      <a href="{{url('accept_post', $post->id)}}" class="btn btn-secondary">Accept</a>
+                        <a href="{{url('reject_post', $post->id)}}" class="btn btn-primary">Reject</a>
                     </td>
 
                 </tr>

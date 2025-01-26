@@ -11,7 +11,7 @@ class HomeController extends Controller
 {
     public function HomePage() {
 
-        $post = Post::all();
+        $post = Post::where('post_status', 'active')->get();
 
         return view('home.homepage', compact('post'));
     }

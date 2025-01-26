@@ -5,7 +5,7 @@
        <div class="services_section_2">
           <div class="row">
             @foreach($post as $post)
-             <div class="col-md-4">
+             <div class="col-md-4" style="padding:30px">
                 <div><img style="margin-bottom: 20px; height: 400px; width: 400px" src="/postimages/{{$post->image}}"></div>
 
                 <h4 style="text-align: center"><b>{{$post->title}}</b></h4>
