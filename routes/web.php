@@ -28,3 +28,7 @@ Route::get('/show_post', [AdminController::class, 'showPost']);
 Route::get('/delete_post/{id}', [AdminController::class, 'deletePost']);
 Route::get('/edit_page/{id}', [AdminController::class, 'editPage']);
 Route::post('/update_post/{id}', [AdminController::class, 'updatePage']);
+
+Route::get('/create_post', [HomeController::class, 'createPost'])->middleware('auth');
+Route::post('/user_post', [HomeController::class, 'userPost'])->middleware('auth');
+
