@@ -13,7 +13,7 @@ class AdminController extends Controller
     {
         if(Auth::id()) {
 
-            $post = Post::all();
+            $post = Post::where('post_status', 'active')->get();
 
             $userType = Auth()->user()->usertype;
 
@@ -97,6 +97,22 @@ class AdminController extends Controller
         $post->save();
 
         return redirect()->back()->with('message', 'Post Updated Successfully');
+    }
+
+    public function acceptPost($id) {
+        $post = Post::find($id);
+        $post->post_status = 'active';
+        $post->save();
+
+        return redirect()->back()->with('message', 'Post Accepted Successfully');
+    }
+
+    public function rejectPost($id) {
+        $post = Post::find($id);
+        $post->post_status = 'rejected';
+        $post->save();
+
+        return redirect()->back()->with('message', 'Post rejected');
     }
 
 }
