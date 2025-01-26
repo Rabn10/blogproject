@@ -53,6 +53,7 @@
           <h4 class="title_deg">{{$post->title}}</h4>
         <p class="des_deg">{{$post->description}}</p>
         <a onClick="return confirm('Are you sure you want to delete this post?')" href="{{url('my_post_del', $post->id)}}" class="btn btn-danger">Delete</a>
+        <a href="{{url('post_update_page', $post->id)}}" class="btn btn-primary">Edit</a>
       </div>
       @endforeach
 
