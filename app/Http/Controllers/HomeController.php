@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Models\Post;
+use Illuminate\Support\Facades\Auth;
 use Alert;
 class HomeController extends Controller
 {
@@ -51,5 +52,25 @@ class HomeController extends Controller
         Alert::success('Success', 'Post Added Successfully');
 
         return redirect()->back();
+    }
+
+    public function myPost() {
+
+        $user = Auth::user();
+        $userId = $user->id;
+        $post = Post::where('user_id', $userId)->get();
+
+
+        return view('home.my_post', compact('post'));
+    }
+
+    public function userDelPost($id) {
+
+        $post = Post::find($id);
+        $post->delete();
+
+        // Alert::success('Success', 'Post Deleted Successfully');
+
+        return redirect()->back()->with('message', 'Post Deleted Successfully');
     }
 }
