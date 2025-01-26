@@ -73,4 +73,30 @@ class HomeController extends Controller
 
         return redirect()->back()->with('message', 'Post Deleted Successfully');
     }
+
+    public function userPostUpdate($id) {
+
+        $post = Post::find($id);
+
+
+        return view('home.post_update_page', compact('post'));
+    }
+
+    public function updatePostData(Request $request, $id) {
+
+        $post = Post::find($id);
+        $post->title = $request->title;
+        $post->description = $request->description;
+        $image = $request->image;
+        if($image) {
+            $imageName = time().'.'.$image->getClientOriginalExtension();
+            $request->image->move(public_path('postimages'), $imageName);
+            $post->image = $imageName;
+        }
+        $post->save();
+
+        Alert::success('Success', 'Post Added Successfully');
+
+        return redirect()->back();
+    }
 }
