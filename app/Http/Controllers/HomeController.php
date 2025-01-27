@@ -99,4 +99,29 @@ class HomeController extends Controller
 
         return redirect()->back();
     }
+
+    //blog post api
+    public function blogPost(Request $request) {
+        
+
+        $search = $request->input('search');
+
+        if ($search) {
+            // Filter posts based on the search query
+            $post = Post::where('post_status', 'active')->where('title', 'like', '%' . $search . '%')->get();
+        } else {
+            // Retrieve all posts if no search query is provided
+            $post = Post::where('post_status', 'active')->get();
+        }
+    
+        return view('home.blog_post', compact('post'));
+    }
+
+    // public function searchPost(Request $request) {
+
+    //     $search = $request->search;
+    //     $post = Post::where('title', 'like', '%'.$search.'%')->get();
+
+    //     return view('home.blog_post', compact('post'));
+    // }
 }
