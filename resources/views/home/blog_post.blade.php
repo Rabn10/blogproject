@@ -47,14 +47,17 @@
             </div>
             <div class="services_section_2">
                <div class="row">
-                @foreach($post as $post)
+                @foreach($post as $item)
                     <div class="col-md-4" style="padding:30px">
-                        <div><img style="margin-bottom: 20px; height: 400px; width: 400px" src="/postimages/{{$post->image}}"></div>
-                        <h4 style="text-align: center"><b>{{$post->title}}</b></h4>
-                        <p style="text-align: center">Posted by: <b>{{$post->name}}</b></p>
-                        <div class="btn_main"><a href="{{url('post_details',$post->id)}}">Read More</a></div>
+                        <div><img style="margin-bottom: 20px; height: 400px; width: 400px" src="/postimages/{{$item->image}}"></div>
+                        <h4 style="text-align: center"><b>{{$item->title}}</b></h4>
+                        <p style="text-align: center">Posted by: <b>{{$item->name}}</b></p>
+                        <div class="btn_main"><a href="{{url('post_details',$item->id)}}">Read More</a></div>
                     </div>
                 @endforeach
+               </div>
+               <div class="d-flex justify-content-center mt-4">
+                  {{ $post->links() }}
                </div>
             </div>
          </div>
