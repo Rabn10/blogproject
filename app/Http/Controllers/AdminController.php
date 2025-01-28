@@ -13,7 +13,7 @@ class AdminController extends Controller
     {
         if(Auth::id()) {
 
-            $post = Post::where('post_status', 'active')->get();
+            $post = Post::where('post_status', 'active')->latest()->take(6)->get();
 
             $userType = Auth()->user()->usertype;
 

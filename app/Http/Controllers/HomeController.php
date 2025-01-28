@@ -11,7 +11,7 @@ class HomeController extends Controller
 {
     public function HomePage() {
 
-        $post = Post::where('post_status', 'active')->get();
+        $post = Post::where('post_status', 'active')->latest()->take(6)->get();
 
         return view('home.homepage', compact('post'));
     }
@@ -108,10 +108,10 @@ class HomeController extends Controller
 
         if ($search) {
             // Filter posts based on the search query
-            $post = Post::where('post_status', 'active')->where('title', 'like', '%' . $search . '%')->get();
+            $post = Post::where('post_status', 'active')->where('title', 'like', '%' . $search . '%')->paginate(9);
         } else {
             // Retrieve all posts if no search query is provided
-            $post = Post::where('post_status', 'active')->get();
+            $post = Post::where('post_status', 'active')->latest()->paginate(9);
         }
     
         return view('home.blog_post', compact('post'));

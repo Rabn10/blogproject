@@ -25,8 +25,8 @@
          <div><img style="padding: 20px; margin: auto" src="/postimages/{{$post->image}}" height="500px" width="500px"></div>
          <h1><b>{{$post->title}}</b></h1>
 
-         <p class="blog-description">{{$post->description}}</p>
-
+         {{-- <p class="blog-description">{{$post->description}}</p> --}}
+         <p class="blog-description">{!! nl2br(e($post->description)) !!}</p>
 
 
            <p>Posted by: <b>{{$post->name}}</b></p>
