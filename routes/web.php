@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\CommentController;
 
 
 /*
@@ -40,4 +41,6 @@ Route::get('/post_update_page/{id}', [HomeController::class, 'userPostUpdate'])-
 Route::post('/update_post_data/{id}', [HomeController::class, 'updatePostData'])->middleware('auth');
 Route::get('/blog_post', [HomeController::class, 'blogPost']);
 
+
+Route::post('/comment', [CommentController::class, 'store']);
 
