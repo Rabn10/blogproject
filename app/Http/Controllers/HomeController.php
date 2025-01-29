@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Post;
 use Illuminate\Support\Facades\Auth;
 use Alert;
+use App\Models\Comment;
 class HomeController extends Controller
 {
     public function HomePage() {
@@ -20,7 +21,9 @@ class HomeController extends Controller
 
         $post = Post::find($id);
 
-        return view('home.post_details', compact('post'));
+        $comment = Comment::where('post_id', $id)->get();
+
+        return view('home.post_details', compact('post', 'comment'));
     }
 
     public function createPost() {
