@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Comment;
+use App\Models\CommentLike;
+use Illuminate\Support\Facades\Auth;
 
 class CommentController extends Controller
 {
@@ -24,5 +26,43 @@ class CommentController extends Controller
         // dd($comment);
 
         return redirect()->back();
+    }
+
+    public function commentLike($id) {
+        $comment = Comment::find($id);
+        $user = Auth::user();
+
+        $commentLike = CommentLike::where('comment_id', $id)->where('user_id', $user->id)->first();
+
+        if($commentLike) {
+            //decrease like
+            $commentLike->delete();
+            $comment->like_count -= 1;
+            $comment->save();
+
+            return response()->json([
+                'success' => true,
+                'likes' => $comment->like_count,
+                'liked' => false,
+                'message' => 'comment unliked successfully'
+            ]);
+        }
+        else {
+            //Liked code
+            CommentLike::create([
+                'user_id' => $user->id,
+                'comment_id' => $id
+            ]);
+
+            $comment->like_count += 1;
+            $comment->save();
+
+            return response()->json([
+                'success' => true,
+                'likes' => $comment->like_count,
+                'liked' => true,
+                'message' => 'comment liked successfully'
+            ]);
+        }
     }
 }
