@@ -44,4 +44,5 @@ Route::get('/blog_post', [HomeController::class, 'blogPost']);
 
 
 Route::post('/comment', [CommentController::class, 'store']);
+Route::post('/comment-like/{id}', [CommentController::class, 'commentLike'])->middleware('auth');
 

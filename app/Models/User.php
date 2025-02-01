@@ -10,6 +10,7 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
 use App\Models\Like;
+use App\Models\CommentLike;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class User extends Authenticatable
@@ -63,5 +64,9 @@ class User extends Authenticatable
 
     public function likes() {
         return $this->hasMany(Like::class);
+    }
+
+    public function commentlikes() {
+        return $this->hasMany(CommentLike::class);
     }
 }

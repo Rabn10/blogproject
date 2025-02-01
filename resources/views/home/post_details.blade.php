@@ -83,8 +83,8 @@
                      <p><strong style="color: #000">{{$comments->name}}</strong></p>
                      <small>{{$comments->created_at->format('M d, Y')}}</small>
                      <p style="color: #000">{{$comments->comment}}</p>
-                     <button class="btn btn-sm btn-primary like-btn" >
-                        <i class="far fa-thumbs-up"></i>  (<span class="like-count">1</span>)
+                     <button class="comment-like-btn {{$user && $comments->isCommentLikedByUser($user->id) ? 'liked' : ''}}" data-id="{{$comments->id}}" >
+                        <i class="far fa-thumbs-up"></i>  (<span class="like-count">{{$comments->like_count}}</span>)
                     </button>
                     <button class="btn btn-sm btn-secondary reply-btn">
                      <i class="far fa-comment"></i> Replies
@@ -129,6 +129,34 @@ $(document).ready(function() {
         });
     });
 });
+
+$(document).ready(function(){
+    $('.comment-like-btn').on('click', function(){
+        let button = $(this);
+        let commentId = button.data('id');
+
+        $.ajax({
+            url: '/comment-like/' + commentId,
+            type: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(response) {
+                if (response.success) {
+                    button.find('.like-count').text(response.likes);
+
+                    if (response.liked) {
+                        button.addClass('liked');
+                    } else {
+                        button.removeClass('liked');
+                    }
+                } else if (response.message === 'Unauthorized') {
+                    alert('Please log in to like comments.');
+                }
+            }
+        })
+    })
+})
 
 
 </script>
