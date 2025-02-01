@@ -25,7 +25,12 @@
             /* align-items: center; */
             /* margin-top: 20px; */
          }
+
+         .liked {
+            color: blue;
+         }
       </style>
+      <meta name="csrf-token" content="{{ csrf_token() }}">
 
    </head>
    <body>
@@ -43,11 +48,15 @@
 
            <p>Posted by: <b>{{$post->name}}</b></p>
            <div class="icon">
-              <button>
-               <i class="far fa-thumbs-up"></i>  <span class="like-count">1</span>
+            @php
+                $user = Auth::user();
+            @endphp
+
+              <button class="like-btn {{$user && $post->isLikedByUser($user->id) ? 'liked' : ''}}" data-id="{{$post->id}}" >
+               <i class="far fa-thumbs-up"></i>  <span class="like-count">{{$post->like_count}}</span>
             </button>
             <button>
-               <i class="far fa-comment"></i> <span class="comment-count">1</span>
+               <i class="far fa-comment"></i> <span class="comment-count">{{$commentCount}}</span>
             </button>
            </div>
       </div>
@@ -87,9 +96,39 @@
       
          </div>
      </div>
-
-     
-
          @include('home.footer')
    </body>
 </html>
+
+<script>
+
+$(document).ready(function() {
+    $(".like-btn").on("click", function() {
+        let button = $(this);
+        let postId = button.data("id");
+
+        $.ajax({
+            url: "/post-like/" + postId,
+            type: "POST",
+            headers: {
+                "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+            },
+            success: function(response) {
+                if (response.success) {
+                    button.find(".like-count").text(response.likes);
+
+                    if (response.liked) {
+                        button.addClass("liked");
+                    } else {
+                        button.removeClass("liked");
+                    }
+                } else if (response.message === "Unauthorized") {
+                    alert("Please log in to like posts.");
+                }
+            }
+        });
+    });
+});
+
+
+</script>

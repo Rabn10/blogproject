@@ -8,8 +8,10 @@ use App\Models\Post;
 use Illuminate\Support\Facades\Auth;
 use Alert;
 use App\Models\Comment;
+use App\Models\Like;
 class HomeController extends Controller
 {
+    //home page blog post
     public function HomePage() {
 
         $post = Post::where('post_status', 'active')->latest()->take(6)->get();
@@ -23,7 +25,10 @@ class HomeController extends Controller
 
         $comment = Comment::where('post_id', $id)->get();
 
-        return view('home.post_details', compact('post', 'comment'));
+        //post comment count
+        $commentCount = Comment::where('post_id', $id)->count();
+
+        return view('home.post_details', compact('post', 'comment','commentCount'));
     }
 
     public function createPost() {
@@ -127,4 +132,40 @@ class HomeController extends Controller
 
     //     return view('home.blog_post', compact('post'));
     // }
+
+    public function postLike($id) {
+        $post = Post::findOrFail($id);
+        $user = Auth::user();
+
+        $like = Like::where('user_id', $user->id)->where('post_id', $post->id)->first();
+
+        if ($like) {
+            $like->delete();
+            $post->like_count -= 1;
+            $post->save();
+
+            return response()->json([
+                'success' => true,
+                'likes' => $post->like_count,
+                'liked' => false,
+                'message' => 'Post unliked successfully'
+            ]);
+        } else {
+            //Liked code
+            Like::create([
+                'user_id' => $user->id,
+                'post_id' => $id
+            ]);
+
+            $post->like_count += 1;
+            $post->save();
+
+            return response()->json([
+                'success' => true,
+                'likes' => $post->like_count,
+                'liked' => true,
+                'message' => 'Post liked successfully'
+            ]);
+        }
+    }
 }
