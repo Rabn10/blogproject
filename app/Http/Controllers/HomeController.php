@@ -23,7 +23,7 @@ class HomeController extends Controller
 
         $post = Post::find($id);
 
-        $comment = Comment::where('post_id', $id)->get();
+        $comment = Comment::where('post_id', $id)->where('delete_flag', 1)->get();
 
         //post comment count
         $commentCount = Comment::where('post_id', $id)->count();

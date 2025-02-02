@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 
 class CommentController extends Controller
 {
+    //store a  comment
     public function store(Request $request) {
         // dd($request->all());
         // $request->validate([
@@ -28,6 +29,7 @@ class CommentController extends Controller
         return redirect()->back();
     }
 
+    //like a comment
     public function commentLike($id) {
         $comment = Comment::find($id);
         $user = Auth::user();
@@ -64,5 +66,17 @@ class CommentController extends Controller
                 'message' => 'comment liked successfully'
             ]);
         }
+    }
+
+    //delete comment
+    public function delete($id) {
+        $comment = Comment::find($id);
+        $comment->delete_flag = 0;
+        $comment->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'comment deleted successfully',
+        ]);
     }
 }

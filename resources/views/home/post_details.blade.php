@@ -31,6 +31,12 @@
          }
       </style>
       <meta name="csrf-token" content="{{ csrf_token() }}">
+      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+      <script src={{ asset('js/deletecomment.js') }}></script>
+
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 
    </head>
    <body>
@@ -79,16 +85,34 @@
              <hr/>
              <div class="comments-section mt-4">
                @foreach($comment as $comments)
-                  <div class="comment mb-3">
-                     <p><strong style="color: #000">{{$comments->name}}</strong></p>
-                     <small>{{$comments->created_at->format('M d, Y')}}</small>
-                     <p style="color: #000">{{$comments->comment}}</p>
-                     <button class="comment-like-btn {{$user && $comments->isCommentLikedByUser($user->id) ? 'liked' : ''}}" data-id="{{$comments->id}}" >
-                        <i class="far fa-thumbs-up"></i>  (<span class="like-count">{{$comments->like_count}}</span>)
-                    </button>
-                    <button class="btn btn-sm btn-secondary reply-btn">
-                     <i class="far fa-comment"></i> Replies
-                  </button>    
+                  <div class="comment mb-3 position-relative p-2 border rounded" style="background-color: #f9f9f9;" id="comment-{{$comments->id}}">
+
+                    <!-- Three Dots Menu -->
+                        <div class="dropdown position-absolute" style="top: 5px; right: 10px;">
+                            <button class="btn btn-link p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="text-decoration: none; color: #000;">
+                            &#x22EE;  <!-- Vertical Ellipsis (three dots) -->
+                            </button>
+                            <ul class="dropdown-menu">
+                                @if(Auth::user() && Auth::id() == $comments->user_id)
+                                <li><a class="dropdown-item edit-comment" href="#" data-id="{{$comments->id}}">Edit</a></li>
+                                <li><button class="delete-comment btn btn-danger btn-sm" data-id="{{ $comments->id }}">Delete</button></li>
+                                @elseif(Auth::check())
+                                <li><a class="dropdown-item report-comment" href="#" data-id="{{$comments->id}}">Report</a></li>
+                                @endif
+                            </ul>
+                        </div>
+
+
+                        <p><strong style="color: #000">{{$comments->name}}</strong></p>
+                        <small>{{$comments->created_at->format('M d, Y')}}</small>
+                        <p style="color: #000">{{$comments->comment}}</p>
+                        
+                        <button class="comment-like-btn {{$user && $comments->isCommentLikedByUser($user->id) ? 'liked' : ''}}" data-id="{{$comments->id}}" >
+                            <i class="far fa-thumbs-up"></i>  (<span class="like-count">{{$comments->like_count}}</span>)
+                        </button>
+                        <button class="btn btn-sm btn-secondary reply-btn">
+                            <i class="far fa-comment"></i> Replies
+                        </button>    
                   </div>
                   <hr/>
                @endforeach
@@ -157,6 +181,7 @@ $(document).ready(function(){
         })
     })
 })
+
 
 
 </script>
