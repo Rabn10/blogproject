@@ -83,6 +83,7 @@
                  </form>
              </div>
              <hr/>
+
              <div class="comments-section mt-4">
                @foreach($comment as $comments)
                   <div class="comment mb-3 position-relative p-2 border rounded" style="background-color: #f9f9f9;" id="comment-{{$comments->id}}">
@@ -94,7 +95,7 @@
                             </button>
                             <ul class="dropdown-menu">
                                 @if(Auth::user() && Auth::id() == $comments->user_id)
-                                <li><a class="dropdown-item edit-comment" href="#" data-id="{{$comments->id}}">Edit</a></li>
+                                <li><button class="edit-comment btn btn-primary btn-sm">Edit</button></li>
                                 <li><button class="delete-comment btn btn-danger btn-sm" data-id="{{ $comments->id }}">Delete</button></li>
                                 @elseif(Auth::check())
                                 <li><a class="dropdown-item report-comment" href="#" data-id="{{$comments->id}}">Report</a></li>
@@ -105,7 +106,15 @@
 
                         <p><strong style="color: #000">{{$comments->name}}</strong></p>
                         <small>{{$comments->created_at->format('M d, Y')}}</small>
-                        <p style="color: #000">{{$comments->comment}}</p>
+                        <div class="comment-text">
+                            <p style="color: #000;">{{$comments->comment}}</p>
+                         </div>
+                         
+                         <div class="edit-section" style="display: none;">
+                            <textarea class="form-control edit-comment-area">{{$comments->comment}}</textarea>
+                            <button class="btn btn-success btn-sm mt-2 save-btn" data-id="{{ $comments->id }}">Save</button>
+                            <button class="btn btn-secondary btn-sm mt-2 cancel-btn">Cancel</button>
+                         </div>
                         
                         <button class="comment-like-btn {{$user && $comments->isCommentLikedByUser($user->id) ? 'liked' : ''}}" data-id="{{$comments->id}}" >
                             <i class="far fa-thumbs-up"></i>  (<span class="like-count">{{$comments->like_count}}</span>)
@@ -181,6 +190,8 @@ $(document).ready(function(){
         })
     })
 })
+
+
 
 
 

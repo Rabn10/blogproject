@@ -79,4 +79,17 @@ class CommentController extends Controller
             'message' => 'comment deleted successfully',
         ]);
     }
+
+    //edit comment
+
+    public function edit(Request $request, $id) {
+        $comment = Comment::find($id);
+        $comment->comment = $request->comment;
+        $comment->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'comment updated successfully',
+        ]);
+    }
 }
