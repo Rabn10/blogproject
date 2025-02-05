@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Reply;
+use App\Models\Comment;
 
 class ReplyController extends Controller
 {
@@ -17,17 +18,32 @@ class ReplyController extends Controller
 
         // dd($comment);
 
-        return redirect()->back();
-    }
-
-    public function index($id) 
-    {
-        $reply = Reply::where('delete_flag', 1)->where('comment_id', $id)->get();
-
+        // return redirect()->back();
         return response()->json([
-            'success'=> true,
+            'success' => true,
             'data' => $reply
         ]);
+    }
 
+    // public function index($id) 
+    // {
+    //     $reply = Reply::where('delete_flag', 1)->where('comment_id', $id)->get();
+
+    //     return response()->json([
+    //         'success'=> true,
+    //         'data' => $reply
+    //     ]);
+
+    // }
+
+    public function index($id)
+    {
+        $comment = Comment::findOrFail($id);
+        $replies = $comment->replies()->latest()->get();
+        $repliesCount = $comment->replies()->count();
+        return response()->json([
+            'replies' => $replies,
+            'repliesCount' => $repliesCount
+        ]);
     }
 }
