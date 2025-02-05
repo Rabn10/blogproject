@@ -123,9 +123,13 @@
                         <button class="comment-like-btn {{$user && $comments->isCommentLikedByUser($user->id) ? 'liked' : ''}}" data-id="{{$comments->id}}" >
                             <i class="far fa-thumbs-up"></i>  (<span class="like-count">{{$comments->like_count}}</span>)
                         </button>
-                        <button class="reply-btn">
-                            <i class="far fa-comment"></i> 
+
+                        {{-- show reply --}}
+                        <button class="reply-btn" data-id="{{ $comments->id }}">
+                            <i class="far fa-comment reply-count">(<span class="reply-count" id="reply-count-{{ $comments->id }}">0</span>)</i> 
                         </button>
+
+                       
 
 
                         {{-- reply section --}}
@@ -135,6 +139,9 @@
                             <button class="btn btn-primary btn-sm mt-2 save-reply-btn" data-id="{{ $comments->id }}">Reply</button>
                             <button class="btn btn-secondary btn-sm mt-2 cancel-reply-btn">Cancel</button>
                          </div> 
+
+                         {{-- display reply --}}
+                         <div class="display-reply" style="display: none;"></div>
                   </div>
                   <hr/>
                @endforeach

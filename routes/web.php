@@ -50,5 +50,6 @@ Route::Delete('/comment/{id}', [CommentController::class, 'delete'])->middleware
 Route::Put('/comment/{id}', [CommentController::class, 'edit'])->middleware('auth');
 
 Route::Post('/reply',[ReplyController::class, 'store'])->middleware('auth');
-Route::get('/reply', [ReplyController::class, 'index'])->middleware('auth');
+Route::get('/reply/{id}', [ReplyController::class, 'index']);
+
 

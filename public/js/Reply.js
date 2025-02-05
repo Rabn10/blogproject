@@ -44,4 +44,54 @@ $(document).ready(function () {
         })
 
     })
+
+
+    $('.reply-btn').on('click', function() {
+        const commentId = $(this).closest('.comment').attr('id').split('-')[1];
+        const replySection = $(this).siblings('.display-reply');
+
+        if(replySection.is(':empty')) {
+            $.ajax({
+                url : '/reply/' + commentId,
+                type : 'GET',
+                success : function(response) {
+                    const replies = response.replies;
+                // console.log('reply', replies.data[0].name);
+                    replies.forEach(reply => {
+                        replySection.append(`
+                            <div class="reply p-2 border rounded mb-2" style="background-color: #f1f1f1;">
+                                <p><strong style="font-weight: 800; color: #000;">${reply.name}</strong></p>
+                                <small>${new Date(reply.created_at).toLocaleDateString()}</small>
+                                <p>${reply.reply}</p>
+                            </div>
+                        `);
+                    });
+                }
+            });
+        }
+
+        replySection.toggle();
+    });
+
+    $(document).ready(function(){
+        $('.reply-btn').each(function(){
+            const commentId = $(this).data('id');
+            console.log('commentId', commentId);
+
+            if(commentId) {
+                $.ajax({
+                    url: '/reply/' + commentId,
+                    type: 'GET',
+                    success: function(response) {
+                        const repliesCount = response.repliesCount;
+                        $('#reply-count-' + commentId).text(repliesCount);
+                    },
+                    error:function() {
+                        console.log('error');
+                    }
+                })
+            }
+        })
+    })
+
 });
