@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\ReplyController;
 
 
 /*
@@ -47,4 +48,7 @@ Route::post('/comment', [CommentController::class, 'store']);
 Route::post('/comment-like/{id}', [CommentController::class, 'commentLike'])->middleware('auth');
 Route::Delete('/comment/{id}', [CommentController::class, 'delete'])->middleware('auth');
 Route::Put('/comment/{id}', [CommentController::class, 'edit'])->middleware('auth');
+
+Route::Post('/reply',[ReplyController::class, 'store'])->middleware('auth');
+Route::get('/reply', [ReplyController::class, 'index'])->middleware('auth');
 

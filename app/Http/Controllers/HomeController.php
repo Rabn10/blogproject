@@ -26,7 +26,7 @@ class HomeController extends Controller
         $comment = Comment::where('post_id', $id)->where('delete_flag', 1)->get();
 
         //post comment count
-        $commentCount = Comment::where('post_id', $id)->count();
+        $commentCount = Comment::where('post_id', $id)->where('delete_flag', '1')->count();
 
         return view('home.post_details', compact('post', 'comment','commentCount'));
     }
