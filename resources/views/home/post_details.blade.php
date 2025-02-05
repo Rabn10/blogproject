@@ -29,10 +29,14 @@
          .liked {
             color: blue;
          }
+         .reply-btn{
+            margin-left: 1rem;
+         }
       </style>
       <meta name="csrf-token" content="{{ csrf_token() }}">
       <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
       <script src={{ asset('js/deletecomment.js') }}></script>
+      <script src={{ asset('js/reply.js') }}></script>
 
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -119,9 +123,18 @@
                         <button class="comment-like-btn {{$user && $comments->isCommentLikedByUser($user->id) ? 'liked' : ''}}" data-id="{{$comments->id}}" >
                             <i class="far fa-thumbs-up"></i>  (<span class="like-count">{{$comments->like_count}}</span>)
                         </button>
-                        <button class="btn btn-sm btn-secondary reply-btn">
-                            <i class="far fa-comment"></i> Replies
-                        </button>    
+                        <button class="reply-btn">
+                            <i class="far fa-comment"></i> 
+                        </button>
+
+
+                        {{-- reply section --}}
+                        <button class="reply reply-btn">Reply</button>
+                        <div class="reply-section" style="display: none;">
+                            <textarea class="form-control reply-area"></textarea>
+                            <button class="btn btn-primary btn-sm mt-2 save-reply-btn" data-id="{{ $comments->id }}">Reply</button>
+                            <button class="btn btn-secondary btn-sm mt-2 cancel-reply-btn">Cancel</button>
+                         </div> 
                   </div>
                   <hr/>
                @endforeach
